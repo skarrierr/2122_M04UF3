@@ -1,0 +1,19 @@
+{
+  "name": "2122_m04uf3",
+  "version": "1.0.0",
+  "description": "ole",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/skarrierr/2122_M04UF3.git"
+  },
+  "author": "",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/skarrierr/2122_M04UF3/issues"
+  },
+  "homepage": "https://github.com/skarrierr/2122_M04UF3#readme"
+}
