@@ -15,13 +15,6 @@ let game_h = 600;
 let config = {
 	width: game_w,
 	height: game_h,
-	physics: {
-		default:'arcade',
-		arcade: {
-			debug: true
-		}
-	
-	},
 	scene : {
 	preload: preload,
 create: create,
@@ -46,12 +39,12 @@ let road1_y = 90;
 let road2_y = 220;
 let road3_y = 390;
 let road4_y = 520;
-let cursors;
+
 let car1_speed = 2;
 let car2_speed = 1.25;
 let car3_speed = 0.75;
 let car4_speed = 1;
-let player_speed = 1;
+
 function preload(){
 
 this.load.image("background", "road.png" );
@@ -64,33 +57,20 @@ this.load.image("canijo","man.png");
 }
 	function checkcars(car){
 
-	if(car.x >800+20){
-	car.x = offset_x;
+	if(car.x >800){
+	car.x = offset_x
 
 	}	
-	if(car.x < 0-20){
-	car.x = 800;
-	}
 	}
 
 function create(){
-cursors = this.input.keyboard.createCursorKeys();
 bg_img = this.add.image(game_w/2,game_h/2,"background");
-
 car1_img = this.add.image(offset_x,road3_y,"ambulance");
-this.physics.add.existing(car1_img, false);
 car2_img = this.add.image(game_w-offset_x,road2_y,"police");
-this.physics.add.existing(car2_img, false);
-
 car3_img = this.add.image(game_w-offset_x,road1_y,"truck");
-this.physics.add.existing(car3_img, false);
-
 car4_img = this.add.image(offset_x, road4_y, "sedan");
-this.physics.add.existing(car4_img, false);
-
 
 player_img = this.add.image(42, 10,"canijo");
-this.physics.add.existing(player_img, true);
 
 
 player_img.setScale(scale_size);
@@ -105,30 +85,15 @@ car2_img.flipX = true;
 
 }
 function update(){
-
-if (cursors.up.isDown){
-	player_img.y -= player_speed;
-}
-else if (cursors.down.isDown){
-	player_img.y += player_speed;
-}
-if (cursors.left.isDown){
-	player_img.x -= player_speed;
-
-}
-else if (cursors.right.isDown){
-	player_img.x += player_speed;
-} 
-
 car3_img.x -= car3_speed;
 car2_img.x -= car2_speed;
 car1_img.x += car1_speed;
 car4_img.x += car4_speed;
 
-checkcars(car1_img);
-checkcars(car2_img);
-checkcars(car3_img);
-checkcars(car4_img);
+checkcars(car1);
+checkcars(car2);
+checkcars(car3);
+checkcars(car4);
 
 }
 </script>
