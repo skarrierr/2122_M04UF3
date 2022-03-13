@@ -1,13 +1,13 @@
 <!doctype html>
 <html>
-<head><title>Cruzo la calle Sim</title>
+<head><title>Matamarcianos David Reyes</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.55.2/phaser.min.js"></script>
 
 
 </head>
 <body>
-<h1>Te falta calle</h1>
+<h1>Matamarcianos</h1>
 
 <script>
 let game_w = 800;
@@ -18,14 +18,14 @@ let config = {
 	physics: {
 		default:'arcade',
 		arcade: {
-			debug: true
+			debug: true,
 		}
 	
 	},
 	scene : {
 	preload: preload,
-create: create,
-update: update
+	create: create,
+	update: update
 	}
 
 
@@ -35,72 +35,101 @@ update: update
 
 let game = new Phaser.Game(config);
 let bg_img;
-let car1_img;
-let car2_img;
-let car3_img;
-let car4_img;
+let ship1_img;
+let ship2_img;
+let ship3_img;
+let ship4_img;
 let player_img;
+let bullet_img;
 let scale_size = 3;
-let offset_x = 32;
-let road1_y = 90;
-let road2_y = 220;
-let road3_y = 390;
-let road4_y = 520;
+let offset_x = 800;
 let cursors;
-let car1_speed = 2;
-let car2_speed = 1.25;
-let car3_speed = 0.75;
-let car4_speed = 1;
+let ship_speed = 2;
+let bullet_speed = 1.25;
 let player_speed = 1;
+let vidas = 3;
+let score = 0;
+let vidas_txt;
+let score_txt;
+
 function preload(){
 
-this.load.image("background", "road.png" );
-this.load.image("ambulance", "ambulance.png");
-this.load.image("police","police.png");
-this.load.image("truck","truckdark.png");
-this.load.image("sedan","sedan_vintage.png");
-
-this.load.image("canijo","man.png");
+this.load.image("background", "bg.png" );
+this.load.image("nave", "ship.png" );
+this.load.image("bullet", "bullet.png");
+this.load.image("player","player.png");
 }
-	function checkcars(car){
 
-	if(car.x >800+20){
-	car.x = offset_x;
 
-	}	
-	if(car.x < 0-20){
-	car.x = 800;
+
+function checkships(ship){
+
+		if(ship.x < 0-20){
+	
+		vidas--;
+	    vidas_txt.text = vidas.toString();
+
+		ship.x = 800;
+		//
+
+
+		}	
+
 	}
-	}
+
+
+
+
+
 
 function create(){
 cursors = this.input.keyboard.createCursorKeys();
 bg_img = this.add.image(game_w/2,game_h/2,"background");
 
-car1_img = this.add.image(offset_x,road3_y,"ambulance");
-this.physics.add.existing(car1_img, false);
-car2_img = this.add.image(game_w-offset_x,road2_y,"police");
-this.physics.add.existing(car2_img, false);
 
-car3_img = this.add.image(game_w-offset_x,road1_y,"truck");
-this.physics.add.existing(car3_img, false);
+ship1_img = this.add.image(offset_x, 100,"nave");
+this.physics.add.existing(ship1_img, true);
 
-car4_img = this.add.image(offset_x, road4_y, "sedan");
-this.physics.add.existing(car4_img, false);
+ship2_img = this.add.image(offset_x, 300,"nave");
+this.physics.add.existing(ship2_img, true);
 
+ship3_img = this.add.image(offset_x, 500,"nave");
+this.physics.add.existing(ship3_img, true);
 
-player_img = this.add.image(42, 10,"canijo");
+ship4_img = this.add.image(offset_x, 700,"nave");
+this.physics.add.existing(ship4_img, true);
+
+player_img = this.add.image(100, 300,"player");
 this.physics.add.existing(player_img, true);
+this.physics.add.collider(ship1_img, player_img, function(){
+//resetear
+vidas--;
+vidas_txt.text = vidas.toString();
+});
+
+bullet_img = this.add.image(100, 300, "bullet");
+this.physics.add.existing(bullet_img, true);
+this.physics.add.collider(ship1_img, bullet_img, function(){
+//resetear
+score = score+100;
+score_txt.text = score.toString();
+ });
+
+
+this.add.text (game_w/1.2,64, "Vidas: ");
+vidas_txt = this.add.text(game_w/1.2 +60, 64, vidas);
+ 
+this.add.text (game_w/1.2,32, "Score: ");
+score_txt = this.add.text(game_w/1.2 +60, 32, score);
+
 
 
 player_img.setScale(scale_size);
-car1_img.setScale(scale_size);
-car2_img.setScale(scale_size);
-car3_img.setScale(scale_size);
-car4_img.setScale(scale_size);
-
-car3_img.flipX = true;
-car2_img.flipX = true;
+ship1_img.setScale(scale_size);
+ship2_img.setScale(scale_size);
+ship3_img.setScale(scale_size);
+ship4_img.setScale(scale_size);
+bullet_img.setScale(scale_size);
 
 
 }
@@ -112,25 +141,25 @@ if (cursors.up.isDown){
 else if (cursors.down.isDown){
 	player_img.y += player_speed;
 }
-if (cursors.left.isDown){
-	player_img.x -= player_speed;
 
+
+ship1_img.x -= ship_speed;
+ship2_img.x -= ship_speed;
+ship3_img.x -= ship_speed;
+ship4_img.x -= ship_speed;
+
+
+checkships(ship1_img);
+checkships(ship2_img);
+checkships(ship3_img);
+checkships(ship4_img);
+
+
+
+		
 }
-else if (cursors.right.isDown){
-	player_img.x += player_speed;
-} 
 
-car3_img.x -= car3_speed;
-car2_img.x -= car2_speed;
-car1_img.x += car1_speed;
-car4_img.x += car4_speed;
 
-checkcars(car1_img);
-checkcars(car2_img);
-checkcars(car3_img);
-checkcars(car4_img);
-
-}
 </script>
 </body>
 </html>
